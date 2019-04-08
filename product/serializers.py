@@ -15,3 +15,11 @@ class CategoryListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = ('name',)
+
+class ProductsByPhraseSerializer(serializers.ModelSerializer):
+    
+    thumbnail = serializers.CharField(source='get_thumbnail_name')
+
+    class Meta:
+        model = Product
+        fields = ('name', 'price', 'thumbnail', 'description')
