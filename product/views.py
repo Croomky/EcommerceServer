@@ -3,10 +3,13 @@ from django.http import HttpResponse, JsonResponse
 from django.db.models import Q
 from rest_framework.generics import RetrieveAPIView, ListAPIView
 
-from .models import Product, Category
+from .models import Product,    \
+    Category,   \
+    FeaturedProduct
 from .serializers import ProductDetailsSerializer,  \
     CategoryListSerializer, \
-    ProductsByPhraseSerializer
+    ProductsByPhraseSerializer, \
+    FeaturedProductsSerializer
 from .mixins import JsonResponseMixin
 
 class ProductDetails(
@@ -44,3 +47,16 @@ class ProductsByPhrase(
             or criterion_desc
             or criterion_body
         )
+
+class FeaturedProducts(
+    JsonResponseMixin,
+    ListAPIView
+):
+    queryset = FeaturedProduct.objects.all()
+    serializer_class = FeaturedProductsSerializer
+
+    # def get_queryset(self):
+    #     for i in self.queryset:
+    #         i = i.as_product()
+
+    #     return self.queryset
