@@ -1,7 +1,7 @@
 from rest_framework import serializers
 from django.http import HttpResponse
 
-from product.models import Product
+from product.models import Product, Category
 
 class ProductDetailsSerializer(serializers.ModelSerializer):
 
@@ -10,3 +10,8 @@ class ProductDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Product
         fields = ('name', 'price', 'thumbnail', 'body')
+
+class CategoryListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = ('name',)
