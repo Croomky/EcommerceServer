@@ -14,7 +14,7 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(max_length=1000)# short description of a product
-    thumbnail = models.ImageField(upload_to='thumbnails')
+    thumbnail = models.ImageField(upload_to='static\\thumbnails')
     price = models.FloatField()
     availableAmt = models.FloatField()
     body = models.TextField(max_length=5000)# actual text appearing on a product detail site
