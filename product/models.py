@@ -38,3 +38,4 @@ class FeaturedProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
 admin.site.register(Product)
+admin.site.register(Category)
