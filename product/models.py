@@ -37,6 +37,15 @@ class Image(models.Model):
 class FeaturedProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
+    def get_name(self):
+        return self.product.name
+
+    def get_price(self):
+        return self.product.price
+
+    def get_thumbnail_name(self):
+        return self.product.get_thumbnail_name()
+
 admin.site.register(Product)
 admin.site.register(Category)
 admin.site.register(FeaturedProduct)
