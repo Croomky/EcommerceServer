@@ -1,7 +1,7 @@
 from os import path 
 from django.db import models
 from django.contrib import admin
-from ecommerceserver.settings import STATIC_URL
+from ecommerceserver.settings import STATIC_ROOT
 
 class Category(models.Model):
     name = models.CharField(max_length=100)
@@ -14,7 +14,7 @@ class Category(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(max_length=1000)# short description of a product
-    thumbnail = models.ImageField(upload_to="static\\product\\thumbnails")
+    thumbnail = models.ImageField(upload_to='static\\thumbnails')
     price = models.FloatField()
     availableAmt = models.FloatField()
     body = models.TextField(max_length=5000)# actual text appearing on a product detail site
@@ -24,7 +24,7 @@ class Product(models.Model):
         return self.name
     
     def get_thumbnail_name(self):
-        return path.basename(path.normpath(self.thumbnail.name))
+        return self.thumbnail.name.split('/')[-1]
 
 class Image(models.Model):
     img = models.ImageField()
@@ -37,4 +37,15 @@ class Image(models.Model):
 class FeaturedProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
+    def get_name(self):
+        return self.product.name
+
+    def get_price(self):
+        return self.product.price
+
+    def get_thumbnail_name(self):
+        return self.product.get_thumbnail_name()
+
 admin.site.register(Product)
+admin.site.register(Category)
+admin.site.register(FeaturedProduct)
