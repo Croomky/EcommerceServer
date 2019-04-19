@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     country = models.CharField(max_length=200, blank=True)
@@ -19,3 +20,24 @@ class Profile(models.Model):
 
     def get_email(self):
         return self.user.email
+
+    def get_country(self):
+        return self.country
+
+    def get_region(self):
+        return self.region
+
+    def get_city(self):
+        return self.city
+
+    def get_post_code(self):
+        return self.post_code
+
+    def get_address_line_1(self):
+        return self.address_line_1
+
+    def get_address_line_2(self):
+        return self.address_line_2
+
+    def get_phone_number(self):
+        return self.phone_number
