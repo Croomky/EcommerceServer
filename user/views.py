@@ -3,7 +3,9 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from rest_framework.views import APIView
-from rest_framework.generics import RetrieveAPIView
+from rest_framework.generics import RetrieveAPIView, \
+    GenericAPIView
+from rest_framework.mixins import UpdateModelMixin
 from rest_framework.authtoken.models import Token
 
 from .serializers import ProfileSerializer
@@ -65,9 +67,14 @@ class RegisterView(APIView):
 
 class ProfileView(APIView):
     def get(self, request):
+        # profile = Profile.objects.filter(
+        #     user=request.user
+        # )
+
         profile = Profile.objects.filter(
-            user=request.user
+            user_id=request.user.pk
         )
+
         serializer = ProfileSerializer(
             profile,
             many=True
@@ -77,6 +84,26 @@ class ProfileView(APIView):
             serializer.data,
             safe=False
         )
+    
+    def post(self, request):
+        user = request.user
+        profile = Profile.objects.get(
+            user_id=request.user.pk
+        )
+
+        user.first_name = request.data.get('first_name')
+        user.last_name = request.data.get('last_name')
+        user.email = request.data.get('email')
+        profile.country = request.data.get('country')
+        profile.region = request.data.get('region')
+        profile.city = request.data.get('city')
+        profile.post_code = request.data.get('post_code')
+        profile.address_line_1 = request.data.get('address_line_1')
+        profile.address_line_2 = request.data.get('address_line_2')
+        profile.phone_number = request.data.get('phone_number')
+
+        user.save()
+        profile.save()
 
 class IsAuthenticatedView(APIView):
     def get(self, request):
