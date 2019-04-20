@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.db.models import Q
 from rest_framework.generics import RetrieveAPIView, ListAPIView
+from rest_framework.views import APIView
 
 from .models import Product,    \
     Category,   \
@@ -60,3 +61,16 @@ class FeaturedProducts(
     #         i = i.as_product()
 
     #     return self.queryset
+
+class ProductByCategory(APIView):
+    
+    def get(self, request, category_id, format=None):
+        # category = Category.objects.get(
+        #     pk=category_id
+        # )
+        product_list = Product.objects.filter(
+            category_id=category_id
+        )
+
+        serializer = ProductsByPhraseSerializer(product_list, many=True)
+        return JsonResponse(serializer.data, safe=False)
