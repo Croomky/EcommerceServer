@@ -2,37 +2,33 @@ from django.shortcuts import render
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.http import JsonResponse
+from django.contrib.auth.models import AnonymousUser
 from rest_framework.views import APIView
-from rest_framework.generics import RetrieveAPIView, \
-    GenericAPIView
+from rest_framework.generics import RetrieveAPIView, GenericAPIView
 from rest_framework.mixins import UpdateModelMixin
 from rest_framework.authtoken.models import Token
 
 from .serializers import ProfileSerializer
 from .models import Profile
 
+
 class LoginView(APIView):
     def post(self, request):
         user = User.objects.get(
-            email=request.data.get('username'),
-            password=request.data.get('password')
+            email=request.data.get("username"), password=request.data.get("password")
         )
 
         if user is None:
             user = User.objects.get(
-                username=request.data.get('username'),
-                password=request.data.get('password')
+                username=request.data.get("username"),
+                password=request.data.get("password"),
             )
 
         if user is not None:
             login(request, user)
-            return JsonResponse({
-                'answer': 'ok'
-            })
+            return JsonResponse({"answer": "ok"})
         else:
-            return JsonResponse({
-                'answer': 'no'
-            })
+            return JsonResponse({"answer": "no"})
 
 
 class RegisterView(APIView):
@@ -40,15 +36,13 @@ class RegisterView(APIView):
         try:
             user = User(
                 # username=request.data.get(''),
-                username='x',
-                email=request.data.get('email'),
-                password=request.data.get('password')
+                username="x",
+                email=request.data.get("email"),
+                password=request.data.get("password"),
             )
             user.save()
 
-            profile = Profile(
-                user=user
-            )
+            profile = Profile(user=user)
             profile.save()
 
             is_created = True
@@ -57,20 +51,13 @@ class RegisterView(APIView):
             is_created = False
 
         if is_created is True:
-            return JsonResponse({
-                'answer': 'ok'
-            })
+            return JsonResponse({"answer": "ok"})
         else:
-            return JsonResponse({
-                'answer': 'no'
-            })
+            return JsonResponse({"answer": "no"})
+
 
 class ProfileView(APIView):
     def get(self, request):
-        # profile = Profile.objects.filter(
-        #     user=request.user
-        # )
-
         profile = Profile.objects.filter(
             user_id=request.user.pk
         )
@@ -84,9 +71,13 @@ class ProfileView(APIView):
             serializer.data,
             safe=False
         )
-    
-    def post(self, request):
+
+    def post(self, request, format=None):
         user = request.user
+
+        if not user.is_authenticated:
+            return JsonResponse({})
+
         profile = Profile.objects.get(
             user_id=request.user.pk
         )
@@ -104,14 +95,13 @@ class ProfileView(APIView):
 
         user.save()
         profile.save()
+        return JsonResponse({"answer": "ok"})
+
 
 class IsAuthenticatedView(APIView):
     def get(self, request):
         if request.user.is_authenticated:
-            return JsonResponse({
-                'answer': 'authenticated'
-            })
+            return JsonResponse({"answer": "authenticated"})
         else:
-            return JsonResponse({
-                'answer': 'not authenticated'
-            })
+            return JsonResponse({"answer": "not authenticated"})
+

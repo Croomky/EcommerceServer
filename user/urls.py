@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import LoginView,   \
+from .views import LoginView,  \
     RegisterView,   \
     IsAuthenticatedView,    \
     ProfileView
