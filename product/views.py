@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.http import HttpResponse, JsonResponse
 from django.db.models import Q
 from rest_framework.generics import RetrieveAPIView, ListAPIView
+from rest_framework.views import APIView
 
 from .models import Product,    \
     Category,   \
