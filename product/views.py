@@ -13,13 +13,18 @@ from .serializers import ProductDetailsSerializer,  \
     FeaturedProductsSerializer
 from .mixins import JsonResponseMixin
 
-class ProductDetails(
-    JsonResponseMixin,
-    RetrieveAPIView
-):
-    queryset = Product.objects.all()
-    serializer_class = ProductDetailsSerializer
-    lookup_url_kwarg = 'id'
+class ProductDetails(APIView):
+    def get(self, request, id):
+        try:
+            queryset = Product.objects.get(
+                pk=id
+            )
+            serializer = ProductDetailsSerializer(queryset)
+            return JsonResponse(serializer.data)
+        except:
+            return JsonResponse({
+                "error": "No item satisfies given criteria."
+            })
 
 class CategoryList(
     JsonResponseMixin,
