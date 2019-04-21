@@ -66,3 +66,16 @@ class FeaturedProducts(
     #         i = i.as_product()
 
     #     return self.queryset
+
+class ProductByCategory(APIView):
+    
+    def get(self, request, category_id, format=None):
+        # category = Category.objects.get(
+        #     pk=category_id
+        # )
+        product_list = Product.objects.filter(
+            category_id=category_id
+        )
+
+        serializer = ProductsByPhraseSerializer(product_list, many=True)
+        return JsonResponse(serializer.data, safe=False)
