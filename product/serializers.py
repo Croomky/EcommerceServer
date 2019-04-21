@@ -11,7 +11,7 @@ class ProductDetailsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ('name', 'price', 'thumbnail', 'body')
+        fields = ('id', 'name', 'price', 'thumbnail', 'body')
 
 class CategoryListSerializer(serializers.ModelSerializer):
     class Meta:
@@ -24,7 +24,7 @@ class ProductsByPhraseSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ('name', 'price', 'thumbnail', 'description')
+        fields = ('id', 'name', 'price', 'thumbnail', 'description')
 
 class FeaturedProductsSerializer(serializers.ModelSerializer):
 
@@ -34,5 +34,5 @@ class FeaturedProductsSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = FeaturedProduct
-        fields = ('name', 'price', 'thumbnail')
+        fields = ('id', 'name', 'price', 'thumbnail')
     
