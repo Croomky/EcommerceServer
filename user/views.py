@@ -14,15 +14,18 @@ from .models import Profile
 
 class LoginView(APIView):
     def post(self, request):
-        user = User.objects.get(
-            email=request.data.get("username"), password=request.data.get("password")
-        )
-
-        if user is None:
+        try:
             user = User.objects.get(
-                username=request.data.get("username"),
-                password=request.data.get("password"),
+                email=request.data.get("username"), password=request.data.get("password")
             )
+
+            if user is None:
+                user = User.objects.get(
+                    username=request.data.get("username"),
+                    password=request.data.get("password"),
+                )
+        except:
+            user = None
 
         if user is not None:
             login(request, user)
