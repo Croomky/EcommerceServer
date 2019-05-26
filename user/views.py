@@ -11,6 +11,7 @@ from rest_framework.authtoken.models import Token
 
 from .serializers import ProfileSerializer
 from .models import Profile
+from .CrsfExemptAuthentication import CsrfExemptAuthentication
 
 
 class LoginView(APIView):
@@ -72,9 +73,11 @@ class RegisterView(APIView):
         else:
             return JsonResponse({"answer": "ok"})
             
-
+            
 
 class ProfileView(APIView):
+    authentication_classes = [CsrfExemptAuthentication]
+
     def get(self, request):
         profile = Profile.objects.filter(
             user_id=request.user.pk
@@ -123,3 +126,12 @@ class IsAuthenticatedView(APIView):
         else:
             return JsonResponse({"answer": "not authenticated"})
 
+# class IsEmailAvailable(APIView):
+#     def get(self, request, email):
+#         try:
+#             user = User.objects.get(
+#                 email=email
+#             )
+#             if user is None:
+#                 return JsonResponse({"answer": "no"})
+#         except:
