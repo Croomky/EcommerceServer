@@ -16,7 +16,7 @@ class ProductDetailsSerializer(serializers.ModelSerializer):
 class CategoryListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ('name',)
+        fields = ('id', 'name',)
 
 class ProductsByPhraseSerializer(serializers.ModelSerializer):
 
@@ -28,6 +28,7 @@ class ProductsByPhraseSerializer(serializers.ModelSerializer):
 
 class FeaturedProductsSerializer(serializers.ModelSerializer):
 
+    id = serializers.IntegerField(source="get_id")
     name = serializers.CharField(source="get_name")
     thumbnail = serializers.CharField(source='get_thumbnail_name')
     price = serializers.FloatField(source="get_price")

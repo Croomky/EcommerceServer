@@ -70,9 +70,6 @@ class FeaturedProducts(
 class ProductByCategory(APIView):
     
     def get(self, request, category_id, format=None):
-        # category = Category.objects.get(
-        #     pk=category_id
-        # )
         product_list = Product.objects.filter(
             category_id=category_id
         )

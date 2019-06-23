@@ -37,6 +37,9 @@ class Image(models.Model):
 class FeaturedProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
 
+    def get_id(self):
+        return self.product.pk
+
     def get_name(self):
         return self.product.name
 
